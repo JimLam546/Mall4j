@@ -32,7 +32,6 @@
 
 <script>
 const http = require('../../utils/http')
-const cartCount = require('../../utils/cart-count.js')
 import imgBox from '../../components/ImgBox/imgBox'
 export default {
   components: {
@@ -78,9 +77,7 @@ export default {
         url: '/mall4cloud_auth/login_out',
         method: 'post',
         callBack: res => {
-          console.log('退出登录token:', uni.getStorageSync('token'))
           uni.removeStorageSync('token')
-          cartCount.getCartCount() // 移除tabBar购物车角标
           uni.removeStorageSync('userDetails')
           uni.switchTab({
             url: '/pages/my/my'
