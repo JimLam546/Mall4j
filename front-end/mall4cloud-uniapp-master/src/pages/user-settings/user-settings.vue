@@ -31,7 +31,8 @@
 </template>
 
 <script>
-var http = require('../../utils/http')
+const http = require('../../utils/http')
+const cartCount = require('../../utils/cart-count.js')
 import imgBox from '../../components/ImgBox/imgBox'
 export default {
   components: {
@@ -79,6 +80,7 @@ export default {
         callBack: res => {
           console.log('退出登录token:', uni.getStorageSync('token'))
           uni.removeStorageSync('token')
+          cartCount.getCartCount() // 移除tabBar购物车角标
           uni.removeStorageSync('userDetails')
           uni.switchTab({
             url: '/pages/my/my'
