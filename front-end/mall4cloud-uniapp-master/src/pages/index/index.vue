@@ -143,7 +143,7 @@ export default {
       },
       indexImgs: [], // 轮播图
       categoryList: [], // 分类列表
-      selectedIndex: 0, // 选中的分类项(默认为第一个分类)
+      selectedIndex: -1, // 选中的分类项(默认不选中)
       selectedCategoryId: '',
       // 分类商品列表的请求参数
       searchListQuery: {

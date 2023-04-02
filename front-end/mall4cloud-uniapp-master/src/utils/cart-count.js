@@ -21,6 +21,10 @@ function getCartCount() {
   }
   if (uni.getStorageSync('token')) {
     http.request(params)
+  } else {
+    uni.removeTabBarBadge({
+      index: 2
+    })
   }
 }
 

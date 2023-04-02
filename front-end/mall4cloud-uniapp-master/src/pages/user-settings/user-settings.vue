@@ -31,7 +31,7 @@
 </template>
 
 <script>
-var http = require('../../utils/http')
+const http = require('../../utils/http')
 import imgBox from '../../components/ImgBox/imgBox'
 export default {
   components: {
@@ -77,7 +77,6 @@ export default {
         url: '/mall4cloud_auth/login_out',
         method: 'post',
         callBack: res => {
-          console.log('退出登录token:', uni.getStorageSync('token'))
           uni.removeStorageSync('token')
           uni.removeStorageSync('userDetails')
           uni.switchTab({
