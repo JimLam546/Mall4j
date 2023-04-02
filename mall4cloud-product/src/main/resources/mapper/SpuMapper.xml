@@ -231,7 +231,7 @@
         #{spuId}
     </foreach>
     <if test="spuName != null and spuName !=''" >
-      AND spuName LIKE concat('%',#{spuName},'%')
+      AND name LIKE concat('%',#{spuName},'%')
     </if>
     <if test="isFailure == 2 " >
       AND status <![CDATA[ <> ]]> 1
