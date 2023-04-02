@@ -134,6 +134,9 @@ public class OrderSearchManager {
         // 过滤
         filterQueryIfNecessary(param, boolQueryBuilder);
 
+        // 筛选删除状态为未删除的订单
+        boolQueryBuilder.filter(QueryBuilders.termQuery("deleteStatus", 0));
+
         // 关键字搜索
         keywordSearch(param, boolQueryBuilder);
 
