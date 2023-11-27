@@ -14,6 +14,7 @@
       <view :class="['item', orderStatus==2? 'active' : '']" @tap="switchOrderSts(2)">待发货</view>
       <view :class="['item', orderStatus==3? 'active' : '']" @tap="switchOrderSts(3)">待收货</view>
       <view :class="['item', orderStatus==5? 'active' : '']" @tap="switchOrderSts(5)">已完成</view>
+      <view :class="['item', orderStatus==5? 'active' : '']" @tap="switchOrderSts(6)">已取消</view>
     </view>
     <view class="order-box">
       <block v-for="(orderItem, orderIdx) in orderList" :key="orderIdx">
@@ -31,7 +32,7 @@
               <image src="/static/images/order-finish.png" />
               <!-- <image src="/static/images/order-cancel.png" /> -->
             </view>
-            <view v-if="orderItem.status==6" class="del" @tap="hanldeShowOrderOperPopup(0,orderItem.orderId)">
+            <view v-if="orderItem.status==5 || orderItem.status==6" class="del" @tap="hanldeShowOrderOperPopup(0,orderItem.orderId)">
               <image src="/static/images/del.png" />
             </view>
             <!-- 已完成或已取消时才显示“order-complete”和“del” -->
@@ -116,7 +117,7 @@ export default {
       pageNum: 1,
       pages: 0,
       orderList: [],
-      operType: 0, // 订单操作类型:0取消; 1删除
+      operType: 0, // 订单操作类型:0删除; 1取消
       operOrderId: '', // 当前操作的订单id
     }
   },
@@ -180,7 +181,7 @@ export default {
 
     /**
      * 显示订单操作弹窗
-     * @param {number} operType 0:取消订单; 1删除订单; 2确认收货
+     * @param {number} operType 0:删除订单; 1取消订单; 2确认收货
      */
     hanldeShowOrderOperPopup(operType,orderId) {
       this.operType = operType
