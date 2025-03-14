@@ -66,9 +66,14 @@
     delete from pay_info where pay_id = #{payId}
   </delete>
 
+<!--  <select id="getPayStatusByOrderIds" resultType="java.lang.Integer">-->
+<!--    select pay_status from pay_info where order_ids = #{orderIds}-->
+<!--  </select>-->
+
   <select id="getPayStatusByOrderIds" resultType="java.lang.Integer">
-    select pay_status from pay_info where order_ids = #{orderIds}
+    select pay_status from pay_info where order_ids = #{orderIds} and user_id = #{userId}
   </select>
+
 
   <select id="isPay" resultType="java.lang.Integer">
     select count(*) from pay_info where order_ids = #{orderIds} and pay_status = 1 and user_id = #{userId}

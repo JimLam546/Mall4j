@@ -38,12 +38,21 @@ public interface PayInfoService {
      */
     void paySuccess(PayInfoResultBO payInfoResult, List<Long> orderIds);
 
+//    /**
+//     * 根据支付订单号获取订单支付状态
+//     * @param orderIds 订单号ids
+//     * @return 支付状态
+//     */
+//    Integer getPayStatusByOrderIds(String orderIds);
+
     /**
-     * 根据支付订单号获取订单支付状态
+     * 根据支付订单号和用户id获取订单支付状态
      * @param orderIds 订单号ids
+     * @param userId 用户id
      * @return 支付状态
      */
-    Integer getPayStatusByOrderIds(String orderIds);
+    Integer getPayStatusByOrderIds(String orderIds,Long userId);
+
 
     /**
      * 查询订单是否已经支付

@@ -108,9 +108,14 @@ public class PayInfoServiceImpl implements PayInfoService {
         }
     }
 
-    @Override
-    public Integer getPayStatusByOrderIds(String orderIds) {
-        return payInfoMapper.getPayStatusByOrderIds(orderIds);
+//    @Override
+//    public Integer getPayStatusByOrderIds(String orderIds) {
+//        return payInfoMapper.getPayStatusByOrderIds(orderIds);
+//    }
+
+        @Override
+    public Integer getPayStatusByOrderIds(String orderIds,Long userId) {
+        return payInfoMapper.getPayStatusByOrderIds(orderIds,userId);
     }
 
     @Override
