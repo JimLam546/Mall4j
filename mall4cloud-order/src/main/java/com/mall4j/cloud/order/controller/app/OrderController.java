@@ -73,18 +73,25 @@ public class OrderController {
         if (addrFeign.isSuccess()){
             shopCartOrderMerger.setUserAddr(addrFeign.getData());
         }
+        // 根据购物车中某个商品的具体订单信息
+        // 如果参数为空，则说明该订单是通过购物车生成的
+        // 如果参数不为空，则说明该订单是直接下单生成的
         ServerResponseEntity<List<ShopCartItemVO>> shopCartItemResponse = shopCartAdapter.getShopCartItems(orderParam.getShopCartItem());
         if (!shopCartItemResponse.isSuccess()) {
             return ServerResponseEntity.transform(shopCartItemResponse);
         }
         List<ShopCartItemVO> shopCartItems = shopCartItemResponse.getData();
         // 购物车
+        // 将所有商品以店铺ID进行分组
         List<ShopCartVO> shopCarts = shopCartAdapter.conversionShopCart(shopCartItems);
         // 重算一遍订单金额
+        // 计算所有商品的价格总和
         recalculateAmountWhenFinishingCalculateShop(shopCartOrderMerger, shopCarts);
         // 防止重复提交
+        // 如果再次进入订单生成页会覆盖原来的缓存内容，但是一般订单生成了后要么返回，要么支付。返回后再进入就重新计算
         RedisUtil.STRING_REDIS_TEMPLATE.opsForValue().set(OrderCacheNames.ORDER_CONFIRM_UUID_KEY + CacheNames.UNION + userId, String.valueOf(userId));
         // 保存订单计算结果缓存，省得重新计算并且用户确认的订单金额与提交的一致
+        // 将计算的结果放入到指定的缓存中（可能不是redis）
         cacheManagerUtil.putCache(OrderCacheNames.ORDER_CONFIRM_KEY,String.valueOf(userId),shopCartOrderMerger);
         return ServerResponseEntity.success(shopCartOrderMerger);
     }
@@ -97,6 +104,7 @@ public class OrderController {
     @Operation(summary = "提交订单，返回支付流水号" , description = "根据传入的参数判断是否为购物车提交订单，同时对购物车进行删除，用户开始进行支付")
     public ServerResponseEntity<List<Long>> submitOrders() {
         Long userId = AuthUserContext.get().getUserId();
+        // 从缓存中取出订单生成时算的总金额
         ShopCartOrderMergerVO mergerOrder = cacheManagerUtil.getCache(OrderCacheNames.ORDER_CONFIRM_KEY, String.valueOf(userId));
         // 看看订单有没有过期
         if (mergerOrder == null) {

@@ -44,12 +44,14 @@ public class ShopCartAdapter {
      */
     public ServerResponseEntity<List<ShopCartItemVO>> getShopCartItems(ShopCartItemDTO shopCartItemParam) {
         ServerResponseEntity<List<ShopCartItemVO>> shopCartItemResponse;
-        // 当立即购买时，没有提交的订单是没有购物车信息的
+        // 如果存在订单项信息，即立即下单
         if (shopCartItemParam != null) {
+            // 获取立即下单的商品详细信息
             shopCartItemResponse = conversionShopCartItem(shopCartItemParam);
         }
         // 从购物车提交订单
         else {
+            // 计算购物车每个商品的总额（价格 * 个数）
             shopCartItemResponse = shopCartFeignClient.getCheckedShopCartItems();
         }
         if (!shopCartItemResponse.isSuccess()) {
@@ -71,6 +73,7 @@ public class ShopCartAdapter {
     public ServerResponseEntity<List<ShopCartItemVO>> conversionShopCartItem(ShopCartItemDTO shopCartItemParam){
         ServerResponseEntity<SpuAndSkuVO> spuAndSkuResponse = spuFeignClient.getSpuAndSkuById(shopCartItemParam.getSpuId(),shopCartItemParam.getSkuId());
         if (!spuAndSkuResponse.isSuccess()) {
+            // 脱敏，返回错误信息，过滤掉业务数据
             return ServerResponseEntity.transform(spuAndSkuResponse);
         }
         SkuVO sku = spuAndSkuResponse.getData().getSku();
